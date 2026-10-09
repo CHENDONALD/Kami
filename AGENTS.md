@@ -25,7 +25,9 @@ One repository, three top-level roles, and the install tools only ever copy the 
   Vercel config. It carries the pages, `styles.css`, `llms.txt`, `robots.txt`,
   `sitemap.xml`, `vercel.json`, `.well-known/`, `feeds/`, and the heavy showcase and
   demo assets. Skill facts it shows (`SKILL.md`, the discovery files) are generated
-  into it, never hand-copied.
+  into it, never hand-copied. `/SKILL.md` and `/kami-skill.md` send
+  `X-Robots-Tag: noindex`: agents can still fetch the markdown, and search
+  engines should not score that file as an HTML page.
 - The root holds repository tooling only: `scripts/` (`build_metadata.py`,
   `package-skill.sh`, `release_gate.py`, `draft-release-notes.py`, `tests/`),
   `assets/fonts/` (the commercial TTFs; run `bash skills/kami/scripts/ensure-fonts.sh`

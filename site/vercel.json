@@ -107,6 +107,24 @@
       ]
     },
     {
+      "source": "/SKILL.md",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex"
+        }
+      ]
+    },
+    {
+      "source": "/kami-skill.md",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex"
+        }
+      ]
+    },
+    {
       "source": "/(.*).md",
       "headers": [
         {
