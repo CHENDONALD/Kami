@@ -75,12 +75,12 @@
       {
         "@type": "Question",
         "name": "可以換成自己的品牌風格嗎？",
-        "acceptedAnswer": { "@type": "Answer", "text": "可以，直接告訴 Agent 你的品牌色、字體與版式偏好，或提供品牌設定，Kami 的預設樣式始終以這次要求為準。" }
+        "acceptedAnswer": { "@type": "Answer", "text": "可以，直接告訴 Agent 品牌色、字體與版式偏好，或提供品牌設定，Kami 的預設樣式始終以這次要求為準。" }
       },
       {
         "@type": "Question",
         "name": "Kami 支援哪些語言？",
-        "acceptedAnswer": { "@type": "Answer", "text": "英文與中文支援較完整，日文與韓文會依字體和排版情況逐份調整，交付前檢查輸出效果。預設字體分別為 Charter、TsangerJinKai02、YuMincho 和 Source Han Serif K。" }
+        "acceptedAnswer": { "@type": "Answer", "text": "英文與中文支援最完整；日文與韓文透過專屬字體回退與版式微調支援，並在交付前逐份檢查效果。預設字體分別為 Charter、TsangerJinKai02、YuMincho 和 Source Han Serif K。" }
       }
     ]
   }
@@ -235,7 +235,7 @@
     <div class="section-head">
       <p class="section-num">Landing Pages</p>
       <h2 class="section-title">用 Kami 搭建</h2>
-      <p class="section-lede">使用同一套網頁範本製作的三款產品網站。</p>
+      <p class="section-lede">基於這套網頁範本搭建的三款產品官網。</p>
     </div>
     <div class="landing-grid">
       <div class="landing-card">
@@ -295,11 +295,11 @@ codex plugin add kami@kami
       </div>
       <div class="faq-pair">
         <dt>可以換成自己的品牌風格嗎？</dt>
-        <dd>可以，直接告訴 Agent 你的品牌色、字體與版式偏好，或提供品牌設定，Kami 的預設樣式始終以這次要求為準。</dd>
+        <dd>可以，直接告訴 Agent 品牌色、字體與版式偏好，或提供品牌設定，Kami 的預設樣式始終以這次要求為準。</dd>
       </div>
       <div class="faq-pair">
         <dt>支援哪些語言？</dt>
-        <dd>英文與中文支援較完整，日文與韓文會依字體和排版情況逐份調整，交付前檢查輸出效果。預設字體分別為 Charter、TsangerJinKai02、YuMincho 和 Source Han Serif K。</dd>
+        <dd>英文與中文支援最完整；日文與韓文透過專屬字體回退與版式微調支援，並在交付前逐份檢查效果。預設字體分別為 Charter、TsangerJinKai02、YuMincho 和 Source Han Serif K。</dd>
       </div>
     </dl>
   </section>
@@ -312,7 +312,7 @@ codex plugin add kami@kami
     </div>
     <div class="background-text">
       <p>我喜歡美股投資，經常讓 Claude 寫研究報告。每次出來的東西都是同一種預設文件的樣子：灰撲撲的，結構不清晰，格式老舊，換個對話就換一套排版，沒有一份讓人想讀下去。於是我開始一條一條地調字體、配色、間距，直到報告變成一份自己真正願意看的頁面。</p>
-      <p>後來要去做《你不知道的 Agent：原理、架構與工程實踐》分享，手上已經有文件，不想再做 PPT，就用 Claude Design 按自己的設計風格來排版，反覆調了很多輪，最後慢慢滿意了。後來加入 SVG 圖表，統一配色與間距，逐漸用在常寫的各種文件上，再把範本和規則整理成了現在的 Kami。</p>
+      <p>後來要去做《你不知道的 Agent：原理、架構與工程實踐》分享，手上已經有文件，不想再做 PPT，就用 Claude Design 按自己的設計風格來排版，反覆調了很多輪，最後慢慢滿意了。再後來加入 SVG 圖表，統一配色與間距，逐漸用在常寫的各種文件上，最後把範本和規則整理成了現在的 Kami。</p>
     </div>
   </section>
 
@@ -340,7 +340,7 @@ codex plugin add kami@kami
     <div class="section-head">
       <p class="section-num">05 · Color</p>
       <h2 class="section-title">暖調克制</h2>
-      <p class="section-lede">使用一種重點色與暖灰色，墨藍色面積不超過頁面的 5%。</p>
+      <p class="section-lede">只用一種重點色搭配暖灰色，墨藍色面積不超過頁面的 5%。</p>
     </div>
 
     <h3 class="subhead">畫布 · Canvas</h3>
@@ -479,7 +479,7 @@ codex plugin add kami@kami
     </div>
 
     <h3 class="subhead">深度</h3>
-    <p style="font-size:14px; color: var(--olive); margin: 0; line-height: 1.55;">預設保持平面。優先用留白、一種安靜的底色，或一條中性細線建立層級；只有真正浮起的截圖、彈層和懸浮介面才使用極輕陰影。</p>
+    <p style="font-size:14px; color: var(--olive); margin: 0; line-height: 1.55;">預設保持平面。優先用留白、安靜底色，或一條中性細線建立層級；只有真正浮起的截圖、彈層和懸浮介面才使用極輕陰影。</p>
   </section>
 
   <!-- ============ 06 COMPONENTS ============ -->
@@ -557,7 +557,7 @@ beauty   = constraints × <span class="k">intention</span> ÷ noise</pre>
 
       <div class="comp">
         <h3>安靜卡片</h3>
-        <p class="hint">一種 ivory 填色 + 8px 圓角 · 無邊框和陰影</p>
+        <p class="hint">ivory 淺色底 + 8px 圓角 · 無邊框和陰影</p>
         <div class="demo" style="background:var(--ivory); border-radius:8px; padding:18px 20px;">
           <p style="font-family:var(--serif); font-weight:500; font-size:15px; margin:0 0 6px; color:var(--near-black);">Tesla 公司介紹 · One-Pager</p>
           <p style="font-size:12px; color:var(--olive); margin:0 0 10px; line-height:1.5;">單頁 A4 · 中文版 · 4 張指標卡 + 3 段正文 + 時間線</p>
@@ -577,7 +577,7 @@ beauty   = constraints × <span class="k">intention</span> ÷ noise</pre>
     <div class="section-head">
       <p class="section-num">09 · Diagrams</p>
       <h2 class="section-title">內聯圖表</h2>
-      <p class="section-lede">提供十八種可嵌入的 SVG 圖表，涵蓋架構、流程和資料，告訴 Claude 需要哪種圖就能加入文件，配色與字體保持一致。</p>
+      <p class="section-lede">提供十八種內聯 SVG 圖表，涵蓋架構、流程和數據，告訴 Claude 需要哪種圖即可加入文件，配色與字體保持一致。</p>
     </div>
     <div class="chart-showcase">
       <!-- Architecture mini -->
@@ -679,7 +679,7 @@ beauty   = constraints × <span class="k">intention</span> ÷ noise</pre>
     <div class="section-head">
       <p class="section-num">10 · Decision Lookup</p>
       <h2 class="section-title">決策速查</h2>
-      <p class="section-lede">依用途選擇元件，表中未列出的情況可參考前面的設計原則。</p>
+      <p class="section-lede">根據用途選擇元件，表中未列出的情況參考前面的設計原則。</p>
     </div>
     <table class="decision">
       <tr><th>要做什麼</th><th>怎麼做</th></tr>
@@ -690,7 +690,7 @@ beauty   = constraints × <span class="k">intention</span> ÷ noise</pre>
       <tr><td class="task">引用某人的話</td><td class="how">olive 色 + 斜體或縮排，不加側邊線</td></tr>
       <tr><td class="task">展示程式碼</td><td class="how">ivory 底 + <code>4pt</code> 圓角 + mono 字體，無邊框</td></tr>
       <tr><td class="task">區分主次按鈕</td><td class="how">Primary 品牌色填充 + ivory 字；Secondary warm-sand + charcoal</td></tr>
-      <tr><td class="task">標註某張特殊卡片</td><td class="how">用更明確的標籤或一種安靜的填色，不加強調邊</td></tr>
+      <tr><td class="task">標註某張特殊卡片</td><td class="how">用更明確的標籤或安靜底色，不加強調邊</td></tr>
       <tr><td class="task">章節開始</td><td class="how">serif <code>500</code> · <code>15pt</code> · 純字級層級，無額外裝飾</td></tr>
       <tr><td class="task">文件封面</td><td class="how">單頁 Display 字級 + 右對齊作者/日期 + 大量留白</td></tr>
       <tr><td class="task">展示關鍵數字</td><td class="how">基線一行排開，透明不做容器 + serif 大數字（墨藍色） + sans 小標籤</td></tr>
@@ -731,7 +731,7 @@ beauty   = constraints × <span class="k">intention</span> ÷ noise</pre>
         <p class="anti-topic">陰影</p>
         <div class="anti-pair">
           <p class="anti-line never"><span class="cue">忌</span><span>box-shadow 硬投影 <code>0 2px 8px rgba(0,0,0,0.3)</code> 觀感偏硬，印刷時也容易發黑。</span></p>
-          <p class="anti-line instead"><span class="cue">宜</span><span>預設保持平面，用留白、一種安靜填色或中性細線建立層級；極輕陰影只留給真正浮起的介面和截圖。</span></p>
+          <p class="anti-line instead"><span class="cue">宜</span><span>預設保持平面，用留白、安靜底色或中性細線建立層級；極輕陰影只留給真正浮起的介面和截圖。</span></p>
         </div>
       </div>
     </div>
