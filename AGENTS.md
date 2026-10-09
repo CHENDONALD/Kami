@@ -243,6 +243,46 @@ python3 scripts/mermaid_normalize.py raw.svg -o clean.svg
   Extract the stable rule into `AGENTS.md`, `SKILL.md`, or `references/`, then discard
   the report.
 
+## Issue And PR Maintenance
+
+- Use official GitHub API or CLI for issue and PR work. Read the complete discussion,
+  associated PRs, current source, and relevant tests before deciding what to change.
+- Before each modification, check related local and live remote commits, branches,
+  worktrees, accessible existing agent conversations, and the project inventory.
+  Report the deduplication evidence and current owner before starting implementation.
+- Validate an existing fix rather than implementing it again. When another conversation
+  owns work in progress, leave implementation with that owner and report its verified
+  identifier and status. Do not modify another conversation's uncommitted work.
+- State access and inventory coverage gaps explicitly. A missing search result is not
+  evidence that nobody owns the work; do not bypass reading restrictions.
+- Perform development, builds, and tests in the user's local Mac checkout and
+  branch. Do not default to creating a new PR, opening a cloud execution environment,
+  or manually triggering remote CI. Preserve existing PRs and existing push-triggered
+  CI; do not disable or reconfigure them. Pushes may continue under applicable
+  specific authorization. Preserve the current branch while branch selection is
+  unclear; do not switch or merge into main based on this workflow preference.
+- Preserve the current checkout and user changes. Implement repairs on a separate
+  branch or worktree, locate the cause before targeted tests, and avoid concurrent
+  heavy builds. Never clean real user data to test a repair.
+- Close a duplicate, verified resolved item, or clearly unrelated report only when the
+  evidence and applicable user authorization support closure. Keep unresolved or
+  uncertain reports open; an empty queue is not a correctness goal.
+- Before implementing any change to a user interface, visual effect, interaction,
+  user-facing parameter, or configuration default, present the concrete change to
+  the user and obtain explicit confirmation. General repair or push authorization
+  does not replace this confirmation. Include the issue, original behavior, proposed
+  change, necessity, and alternatives. Pause and isolate any such unapproved work
+  already in progress; do not submit or ship it. Report any already pushed changes
+  accurately and do not roll them back without authorization. Internal repairs that
+  do not change user behavior may continue under their applicable authorization.
+- Confirm applicable authorization separately for commits, pushes, merges, and
+  releases. Distinguish code fixed, tests passed, committed, released, and user retested.
+- Keep reusable project guidance in this repository. Follow the existing rule above
+  for one-off reports and diagnostics; do not mix temporary run status, private paths,
+  personal information, or conversation identifiers into public maintenance guidance.
+- If there are no open issues or PRs, report the verified result without inventing
+  code changes or unnecessary repair branches.
+
 ## Generated Mirrors
 
 `plugins/kami/skills/kami/` mirrors the distributable files from `skills/kami/`;
