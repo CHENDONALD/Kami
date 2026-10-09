@@ -10,7 +10,7 @@
 
 ## Why
 
-Kami gives AI agents templates and layout rules for documents and landing pages. Create PDFs and PNGs, or export slides as editable PowerPoint files.
+Kami brings warm, paper-inspired typography to documents and clean pages. Create beautiful PDFs, images, or export slides as editable PowerPoint files.
 
 Kami (紙, かみ) means paper in Japanese. It includes eight document templates, a landing-page system, and checks for content and layout.
 
