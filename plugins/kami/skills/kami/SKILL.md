@@ -39,10 +39,13 @@ Use the nearest existing template and check. Do not add a template, shared CSS l
 | User language | HTML templates | Slides (PDF default) | Slides (PPTX, only when an editable deck is requested) | Slides (Marp) |
 |---|---|---|---|---|
 | Chinese (primary) | `*.html` | `slides-weasy.html` | `slides.py` | `slides-marp.md` |
+| Traditional Chinese | `*.html` with `<html lang="zh-Hant">` (or `zh-TW`, `zh-HK`): the render swaps in a Ming face with centered punctuation | `slides-weasy.html`, same `lang` | `slides.py` (keeps TsangerJinKai02) | `slides-marp.md` (keeps TsangerJinKai02) |
 | English | `*-en.html` | `slides-weasy-en.html` | `slides-en.py` | `slides-marp-en.md` |
 | Japanese (best-effort) | `*.html`, JP Mincho first | `slides-weasy.html` | `slides.py` | `slides-marp.md` |
 | Korean | `*-ko.html` | `slides-weasy-ko.html` | `slides-en.py` only if PPTX is required | `slides-marp.md` |
 | Other (best-effort) | CJK or EN path by script coverage | `slides-weasy.html` or `-en` | `slides.py` / `slides-en.py` | `slides-marp.md` or `-en` |
+
+**Simplified Chinese serif (deterministic trigger).** The default face is TsangerJinKai02 (Kai). Use Source Han Serif SC (思源宋体 SC) instead when the document speaks for a company rather than a person: a company one-pager, proposal, white paper, product or company letter, report or deck, or a request that says it is commercial or published in a company's name (公司、商用、对外). A resume, cover letter, personal portfolio or personal letter stays Kai even when it names an employer or a brand profile exists, since the profile holds the person's own contact fields. Do not decide by taste: if the document is a company one, set `<html lang="zh-CN" data-serif="source-han">` on the filled template, otherwise leave it as is. The render then leads every font stack with Source Han Serif SC and retunes body tracking (`references/design.md` Letter-spacing); run the usual `--deliver` and the 2-page resume check. Traditional Chinese ignores the marker. Source Han Serif SC is not bundled: `brew install --cask font-source-han-serif-sc` (macOS) or `apt-get install fonts-noto-cjk` (Linux, the same design named Noto Serif CJK SC). `--check-fonts` reads the marker from the HTML beside the PDF.
 
 Japanese, Korean, and other languages need a visual pass on the page images before shipping. Reference docs are shared English specs.
 

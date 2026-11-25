@@ -17,6 +17,8 @@ from pathlib import Path
 from urllib.parse import unquote
 
 from checks import _resume_balance_issues, scan_density
+from hans import is_source_han
+from hant import is_traditional_tag
 from lint import scan_file
 from math_render import MathRenderError
 from optional_deps import MissingDepError, require_pymupdf, require_pypdf_reader
@@ -39,6 +41,15 @@ from shared import (
 CN_PRIMARY_FONTS = {"TsangerJinKai02"}
 EN_PRIMARY_FONTS = {"Charter"}
 KO_PRIMARY_FONTS = {"Source-Han-Serif-K", "SourceHanSerifK"}
+# Traditional Chinese documents lead with Source Han Serif TC (hant.py); for
+# them TsangerJinKai02 is a defect, since it sets mainland punctuation.
+HANT_PRIMARY_FONTS = {"SourceHanSerifTC"}
+# Simplified Chinese commercial / public-facing documents ask for Source Han
+# Serif SC (hans.py); it is a legitimate primary beside TsangerJinKai02.
+HANS_PRIMARY_FONTS = {"SourceHanSerifSC"}
+# Noto Serif CJK SC is the same design under Google's name (what `fonts-noto-cjk`
+# installs on Linux), so a marked document set in it is the reference rendering.
+HANS_MARKED_PRIMARY_FONTS = HANS_PRIMARY_FONTS | {"NotoSerifCJKsc", "NotoSerifSC"}
 
 # Serif families that keep a CJK page readable when the primary is unavailable.
 # Falling through to one of these is a degradation, not a defect: the page still
@@ -141,20 +152,49 @@ def _normalize_font_name(name: str) -> str:
     return re.sub(r"[^a-z0-9]", "", name.lower())
 
 
-def _classify_cjk_font(font_name: str) -> str:
-    """Return 'primary', 'serif' or 'other' for one font name.
+def _classify_cjk_font(font_name: str, traditional: bool = False, source_han: bool | None = None) -> str:
+    """Return 'primary', 'serif', 'mainland' or 'other' for one font name.
+
+    `traditional` comes from the PDF's /Lang: a Traditional Chinese document
+    has its own primary, and TsangerJinKai02 there is 'mainland', not primary.
 
     'other' covers both a system sans substitution and a family nobody here
     recognizes. Naming which of the two it is would need a second marker table
     to maintain, and would change nothing: both fail, both take the same fix,
     and the message already prints the family that drew the text.
+
+    `source_han` is the source HTML's `data-serif` marker when the HTML sits beside
+    the PDF: True makes Source Han Serif SC the only Simplified primary (a
+    fallback to TsangerJinKai02 is then a serif fallback), False makes
+    TsangerJinKai02 the only one, and None (no source found) accepts either.
     """
     normalized = _normalize_font_name(font_name)
-    if any(_normalize_font_name(m) in normalized for m in CN_PRIMARY_FONTS | KO_PRIMARY_FONTS):
+    if traditional:
+        primaries = HANT_PRIMARY_FONTS
+    elif source_han is True:
+        primaries = HANS_MARKED_PRIMARY_FONTS | KO_PRIMARY_FONTS
+    elif source_han is False:
+        primaries = CN_PRIMARY_FONTS | KO_PRIMARY_FONTS
+    else:
+        primaries = CN_PRIMARY_FONTS | HANS_PRIMARY_FONTS | KO_PRIMARY_FONTS
+    if any(_normalize_font_name(m) in normalized for m in primaries):
         return "primary"
+    if traditional and any(_normalize_font_name(m) in normalized for m in CN_PRIMARY_FONTS):
+        return "mainland"
     if any(_normalize_font_name(m) in normalized for m in CJK_SERIF_MARKERS):
         return "serif"
     return "other"
+
+
+def _pdf_lang(pdf_path: Path) -> str | None:
+    """Return the PDF catalog /Lang, which WeasyPrint copies from <html lang>."""
+    fitz = require_pymupdf()
+    try:
+        with fitz.open(str(pdf_path)) as doc:
+            kind, value = doc.xref_get_key(doc.pdf_catalog(), "Lang")
+    except Exception:
+        return None
+    return value if kind == "string" else None
 
 
 class EmptyPdfError(ValueError):
@@ -202,7 +242,7 @@ MIXED_FAMILY_MIN_CHARS = 3
 # here uses them, and they are short enough to bite a real family name.
 _FONT_STYLE_SUFFIXES = (
     "extralight", "semibold", "demibold", "oblique", "regular", "medium",
-    "italic", "mediu", "light", "black", "heavy", "roman", "book", "bold",
+    "italic", "mediu", "medi", "light", "black", "heavy", "roman", "book", "bold",
     "thin", "lig",
 )
 
@@ -230,6 +270,10 @@ def _font_family_key(name: str) -> str:
     return key
 
 
+HANT_RECOVERY_HINT = (
+    "  fix: install a Traditional Chinese Ming face (macOS ships Songti TC, Windows "
+    "PMingLiU, `apt-get install fonts-noto-cjk` on Linux), then render again"
+)
 FONT_RECOVERY_HINT = (
     "  fix: bash scripts/ensure-fonts.sh (installs a CJK serif into the user font dir), "
     "or `brew install --cask font-source-han-serif-sc` on macOS, "
@@ -280,6 +324,7 @@ def check_fonts(paths: list[str]) -> int:
             print(f"OK: {rel}: no CJK body text to judge ({count} ideograph(s))")
             continue
 
+        traditional = is_traditional_tag(_pdf_lang(pdf))
         # Collapse weight variants into their family before counting families.
         families: dict[str, tuple[str, int]] = {}
         for name, chars in usage.items():
@@ -302,16 +347,25 @@ def check_fonts(paths: list[str]) -> int:
             print(f"ERROR: {rel}: CJK text split across families: {font} ({font_chars}), {detail}")
             print("  per-glyph fallback breaks single words across two typefaces; "
                   "one page carries one serif")
-            print(FONT_RECOVERY_HINT)
+            print(HANT_RECOVERY_HINT if traditional else FONT_RECOVERY_HINT)
             failures += 1
             continue
 
-        verdict = _classify_cjk_font(font)
+        source = pdf.with_suffix(".html")
+        source_han = (is_source_han(source.read_text(encoding="utf-8", errors="replace"))
+                      if source.is_file() else None)
+        verdict = _classify_cjk_font(font, traditional, source_han)
         if verdict == "primary":
             print(f"OK: {rel}: CJK body text in {font} ({count} ideographs)")
         elif verdict == "serif":
             print(f"WARN: {rel}: CJK body text in {font}, a serif fallback, not the kami primary")
             print("  acceptable, but the page is not the reference rendering")
+        elif verdict == "mainland":
+            print(f"ERROR: {rel}: Traditional Chinese body text in {font}, which sets mainland punctuation")
+            print("  its comma and full stop sit bottom-left in a narrow cell; Traditional "
+                  "Chinese centers them in a full-width cell")
+            print(HANT_RECOVERY_HINT)
+            failures += 1
         else:
             print(f"ERROR: {rel}: CJK body text in {font}, not a CJK serif")
             print("  the parchment metrics are tuned for serif stroke density; a sans "
